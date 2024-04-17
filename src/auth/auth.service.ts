@@ -1,14 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { BodyLogin, BodyRegister, DtoLogin } from 'src/dtos/auth.dto';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
 
-    login(bodyLogin: BodyLogin): DtoLogin {
-        console.log(bodyLogin);
+    constructor(private prismaService: PrismaService){}
 
+    async login(bodyLogin: BodyLogin): Promise<DtoLogin> {
+        console.log(bodyLogin); 
+        const getRoles = await this.prismaService.roles.findMany();
+        console.log(getRoles);
         
+
         
         const response: DtoLogin = {
             success: true,
