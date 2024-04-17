@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// DATABASE_URL="mysql://admin:@localhost:3306/academic"
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// INSERT INTO `roles`(`rol`) VALUES ('Administrador'),('Profesor'),("Estudiante")
+model Roles {
+  id       Int   @id @default(autoincrement())
+  rol      String
+  usuarios Users[]
+}
+
+// INSERT INTO `users` (`id`, `name`, `lastname`, `username`, `password`, `email`, `age`, `rolId`) VALUES (NULL, 'admin', 'admin', 'admin', 'admin', 'admin@gmail.com', '22', '1');
+model Users {
+  id       Int    @id @default(autoincrement())
+  name     String
+  lastname String
+  username String
+  password String
+  email    String
+  age      String
+  rolText  Roles @relation(fields: [rolId], references: [id])
+  rolId    Int
+}
+
+
