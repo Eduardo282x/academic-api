@@ -10,6 +10,8 @@ export class AuthService {
     constructor(private prisma: PrismaService) { }
 
     async login(bodyLogin: BodyLogin): Promise<DtoLogin> {
+        console.log(bodyLogin);
+        
         const findUser: Users = await this.prisma.users.findFirst({
             where: {
                 username: bodyLogin.username,
@@ -41,18 +43,18 @@ export class AuthService {
     }
 
     async register(bodyRegister: BodyRegister): Promise<DtoBaseResponse> {
-        console.log(bodyRegister);
-        const createUser = await this.prisma.users.create({
-            data: bodyRegister
-        });
-        if (!createUser) {
+        try{
+            const createUser = await this.prisma.users.create({
+                data: bodyRegister
+            });
+            const response: DtoBaseResponse = {
+                success: true,
+                message: 'Usuario registrado',
+                statusCode: 200
+            }
+            return response;
+        }catch(err){
             throw new BadRequestException('Error al intentar crear el usuario')
         }
-        const response: DtoBaseResponse = {
-            success: true,
-            message: 'Usuario registrado',
-            statusCode: 200
-        }
-        return response;
     }
 }

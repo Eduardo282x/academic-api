@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Users } from '@prisma/client';
-import { DtoUsers } from 'src/dtos/users.dto';
+import { DtoUsers, QueryUsers } from 'src/dtos/users.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -8,17 +8,10 @@ export class UsersService {
 
     constructor(private prisma: PrismaService){}
 
-    async getAllUsers(): Promise<DtoUsers[]> {
+    async getAllUsers(rolId: QueryUsers): Promise<DtoUsers[]> {
         const users: Users[] = await this.prisma.users.findMany({
             where: {
-                OR: [
-                    {
-                        rolId: 2
-                    },
-                    {
-                        rolId: 3
-                    }
-                ]
+                rolId: Number(rolId.rolId)+1
             },
             include: {
                 rolText: true
@@ -35,7 +28,8 @@ export class UsersService {
         usersParse.map(us => {
             us.rolText = us.rolText.rol
             delete us.password
-        })
+        });
+
         return usersParse;
     }
 }

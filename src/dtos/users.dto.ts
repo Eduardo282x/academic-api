@@ -8,3 +8,7 @@ export class DtoUsers {
     age: string;
     rolText: string;
 }
+
+export class QueryUsers {
+    rolId: number;
+}
