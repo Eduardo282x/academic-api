@@ -2,7 +2,6 @@ import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { BodyLogin, BodyRegister, DtoLogin } from 'src/dtos/auth.dto';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 @Controller('auth')
 export class AuthController {
@@ -15,7 +14,7 @@ export class AuthController {
     }
 
     @Post('/register')
-    postRegister(@Body() bodyRegister: BodyRegister): DtoBaseResponse {
-        return this.authService.register(bodyRegister);
+    async postRegister(@Body() bodyRegister: BodyRegister): Promise<DtoBaseResponse> {
+        return await this.authService.register(bodyRegister);
     }
 }

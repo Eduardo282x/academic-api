@@ -6,6 +6,7 @@
 // DATABASE_URL="mysql://admin:@localhost:3306/academic"
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
