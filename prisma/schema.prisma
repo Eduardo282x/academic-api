@@ -1,11 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-// DATABASE_URL="mysql://admin:@localhost:3306/academic"
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["relationJoins"]
 }
 
@@ -14,24 +8,99 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// INSERT INTO `roles`(`rol`) VALUES ('Administrador'),('Profesor'),("Estudiante")
-model Roles {
-  id       Int   @id @default(autoincrement())
-  rol      String
-  usuarios Users[]
+model activities {
+  activityId   Int      @id @default(autoincrement())
+  activityName String
+  topidId      Int
+  topics       topics   @relation(fields: [topidId], references: [topicIc], map: "Activities_topidId_fkey")
+  grades       grades[]
+
+  @@index([topidId], map: "Activities_topidId_fkey")
 }
 
-// INSERT INTO `users` (`id`, `name`, `lastname`, `username`, `password`, `email`, `age`, `rolId`) VALUES (NULL, 'admin', 'admin', 'admin', 'admin', 'admin@gmail.com', '22', '1');
-model Users {
-  id       Int    @id @default(autoincrement())
+model attendance {
+  attendanceId Int      @id @default(autoincrement())
+  studentId    Int
+  subjectsId   Int
+  date         DateTime
+  attended     Boolean
+  students     students @relation(fields: [studentId], references: [studentId], map: "Attendance_studentId_fkey")
+  subjects     subjects @relation(fields: [subjectsId], references: [subjectId], map: "Attendance_subjectsId_fkey")
+
+  @@index([studentId], map: "Attendance_studentId_fkey")
+  @@index([subjectsId], map: "Attendance_subjectsId_fkey")
+}
+
+model classrooms {
+  classroomId Int        @id @default(autoincrement())
+  grade       String
+  students    students[]
+  subjects    subjects[]
+}
+
+model grades {
+  gradesId   Int        @id @default(autoincrement())
+  studendId  Int
+  activityId Int
+  score      Decimal    @db.Decimal(10, 2)
+  activities activities @relation(fields: [activityId], references: [activityId], map: "Grades_activityId_fkey")
+  students   students   @relation(fields: [studendId], references: [studentId], map: "Grades_studendId_fkey")
+
+  @@index([activityId], map: "Grades_activityId_fkey")
+  @@index([studendId], map: "Grades_studendId_fkey")
+}
+
+model roles {
+  id    Int     @id @default(autoincrement())
+  rol   String
+  users users[]
+}
+
+model students {
+  studentId   Int          @id @default(autoincrement())
+  userId      Int
+  classroomId Int
+  attendance  attendance[]
+  grades      grades[]
+  classrooms  classrooms   @relation(fields: [classroomId], references: [classroomId], map: "Students_classroomId_fkey")
+  users       users        @relation(fields: [userId], references: [id], map: "Students_userId_fkey")
+
+  @@index([classroomId], map: "Students_classroomId_fkey")
+  @@index([userId], map: "Students_userId_fkey")
+}
+
+model subjects {
+  subjectId   Int          @id @default(autoincrement())
+  subjectName String
+  classroomId Int
+  attendance  attendance[]
+  classrooms  classrooms   @relation(fields: [classroomId], references: [classroomId], map: "Subjects_classroomId_fkey")
+  topics      topics[]
+
+  @@index([classroomId], map: "Subjects_classroomId_fkey")
+}
+
+model topics {
+  topicIc    Int          @id @default(autoincrement())
+  topicName  String
+  subjectId  Int
+  activities activities[]
+  subjects   subjects     @relation(fields: [subjectId], references: [subjectId], map: "Topics_subjectId_fkey")
+
+  @@index([subjectId], map: "Topics_subjectId_fkey")
+}
+
+model users {
+  id       Int        @id @default(autoincrement())
   name     String
   lastname String
   username String
   password String
   email    String
   age      String
-  rolText  Roles @relation(fields: [rolId], references: [id])
   rolId    Int
+  students students[]
+  roles    roles      @relation(fields: [rolId], references: [id], map: "Users_rolId_fkey")
+
+  @@index([rolId], map: "Users_rolId_fkey")
 }
-
-

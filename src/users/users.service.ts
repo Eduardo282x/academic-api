@@ -8,10 +8,58 @@ export class UsersService {
 
     constructor(private prisma: PrismaService){}
 
-    async getAllUsers(rolId: QueryUsers): Promise<DtoUsers[]> {
+    async getUsers(): Promise<DtoUsers[]> {
+        const users: Users[] = await this.prisma.users.findMany({
+            include: {
+                rolText: true
+            }
+        });
+
+        
+        if (!(users.length > 0)) {
+            throw new BadRequestException('No se encontraron usuarios')
+        };
+
+        const usersParse: any[] = users;
+        
+        usersParse.map(us => {
+            us.rolText = us.rolText.rol
+            delete us.password
+        });
+
+        return usersParse;
+    }
+
+    async getTeachers(): Promise<DtoUsers[]> {
         const users: Users[] = await this.prisma.users.findMany({
             where: {
-                rolId: Number(rolId.rolId)+1
+                rolId: 2
+            },
+            include: {
+                rolText: true
+            }
+        });
+
+        
+        if (!(users.length > 0)) {
+            throw new BadRequestException('No se encontraron usuarios')
+        };
+
+        const usersParse: any[] = users;
+        
+        usersParse.map(us => {
+            us.rolText = us.rolText.rol
+            delete us.password
+        });
+
+        return usersParse;
+    }
+    async getStudents(rolId: QueryUsers): Promise<DtoUsers[]> {
+        console.log(rolId);
+        
+        const users: Users[] = await this.prisma.users.findMany({
+            where: {
+                rolId: 3
             },
             include: {
                 rolText: true
