@@ -1,5 +1,5 @@
 export class DtoBaseResponse {
-    success: boolean
-    message: string
-    statusCode: number
+    success: boolean = true;
+    message: string;
+    statusCode: number = 200;
 }

@@ -1,5 +1,5 @@
 import { DtoBaseResponse } from "./base-response.dto";
-import { IsNumber, isString, IsString } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
 
 export class DtoLogin extends DtoBaseResponse{
     userData: UserParse;
