@@ -7,6 +7,7 @@
 -- AlterTable
 -- ALTER TABLE `grades` MODIFY `score` DECIMAL(10, 2) NOT NULL;
 
+-- INSERT INTO `roles` (`rol`) VALUES ('Administrador'),('Profesor'),('Estudiante');
 -- INSERT INTO `users`(`name`, `lastname`, `username`, `password`, `email`, `age`, `rolId`) VALUES ('admin','admin','admin','admin','admin@gmail.com','22','1'),('Eduardo','Rojas','Eduardo28','1234','eduardo@gmail.com','22','2'),('Estudiante','Nuevo','Estudiante01','12345678','estudiante@gmail.com','22','3')
 -- INSERT INTO `classrooms` (`classroomId`, `grade`) VALUES (NULL, '6to Grado');
 -- INSERT INTO `subjects` (`subjectId`, `subjectName`, `classroomId`) VALUES (NULL, 'Geometria', '1');

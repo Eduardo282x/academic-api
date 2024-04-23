@@ -70,12 +70,13 @@ model students {
 }
 
 model subjects {
-  subjectId   Int          @id @default(autoincrement())
-  subjectName String
-  classroomId Int
-  attendance  attendance[]
-  classrooms  classrooms   @relation(fields: [classroomId], references: [classroomId], map: "Subjects_classroomId_fkey")
-  topics      topics[]
+  subjectId          Int          @id @default(autoincrement())
+  subjectName        String
+  subjectDescription String       @db.VarChar(200)
+  classroomId        Int
+  attendance         attendance[]
+  classrooms         classrooms   @relation(fields: [classroomId], references: [classroomId], map: "Subjects_classroomId_fkey")
+  topics             topics[]
 
   @@index([classroomId], map: "Subjects_classroomId_fkey")
 }

@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { subjects } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
+import { DtoSubjects } from 'src/dtos/subjects.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -9,7 +10,7 @@ export class SubjectsService {
 
     constructor(private prisma: PrismaService){}
 
-    async getSubjects(): Promise<any[]>{
+    async getSubjects(): Promise<DtoSubjects[]>{
         const getSubjects: subjects[] = await this.prisma.subjects.findMany({
             include: {
                 classrooms: true
@@ -20,7 +21,10 @@ export class SubjectsService {
             throw new BadRequestException('No se encontraron materias');
         }
 
-        const parseSubjects = [];
+        const parseSubjects: DtoSubjects[] = getSubjects.map((sub: any) => {
+            sub.classrooms = sub.classrooms.grade
+            return sub
+        })
 
         return parseSubjects;
     }

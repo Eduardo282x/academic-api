@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
 import { SubjectsService } from './subjects.service';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
+import { DtoSubjects } from 'src/dtos/subjects.dto';
 
 @Controller('subjects')
 export class SubjectsController {
@@ -9,7 +10,7 @@ export class SubjectsController {
     }
 
     @Get()
-    async getSubjects(): Promise<any[]>{
+    async getSubjects(): Promise<DtoSubjects[]>{
         return await this.subjectsService.getSubjects();
     }
 
