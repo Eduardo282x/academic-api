@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { subjects } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
-import { DtoSubjects } from 'src/dtos/subjects.dto';
+import { BodyAddSubject, BodyUpdateSubject, DtoSubjects } from 'src/dtos/subjects.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -29,16 +29,16 @@ export class SubjectsService {
         return parseSubjects;
     }
 
-    async addSubjects(bodySubjects: any): Promise<DtoBaseResponse>{
-        console.log(bodySubjects);
-        
-        const getSubjects: subjects[] = await this.prisma.subjects.findMany({
-            include: {
-                classrooms: true
+    async addSubjects(bodySubjects: BodyAddSubject): Promise<DtoBaseResponse>{
+        const createSubject: subjects = await this.prisma.subjects.create({
+            data: {
+                subjectName: bodySubjects.subjectName,
+                classroomId: bodySubjects.classroomId,
+                subjectDescription: ''
             }
         });
 
-        if(!(getSubjects.length>0)){
+        if(!createSubject){
             throw new BadRequestException('No se encontraron materias');
         }
 
@@ -46,25 +46,30 @@ export class SubjectsService {
         return baseResponse;
     }
 
-    async putSubjects(bodySubjects: any): Promise<DtoBaseResponse>{
-        const getSubjects: subjects = await this.prisma.subjects.update({
+    async putSubjects(bodySubjects: BodyUpdateSubject): Promise<DtoBaseResponse>{
+        const updateSubject: subjects = await this.prisma.subjects.update({
             data: {
-                subjectName: '',
-                classroomId: 1,
+                subjectName: bodySubjects.subjectName,
+                classroomId: bodySubjects.classroomId,
+                subjectDescription: bodySubjects.subjectDescription
             },
             where: {
-                subjectId: 1
+                subjectId: bodySubjects.subjectId
             }
         });
+
+        if(!updateSubject){
+            throw new BadRequestException('No se encontraron materias');
+        }
 
         baseResponse.message = 'Materia actualizada.'
         return baseResponse;
     }
 
-    async deleteSubjects(bodySubjects: any): Promise<DtoBaseResponse>{
+    async deleteSubjects(bodySubjects: BodyUpdateSubject): Promise<DtoBaseResponse>{
         await this.prisma.subjects.delete({
             where: {
-                subjectId: 1
+                subjectId: bodySubjects.subjectId
             }
         });
 

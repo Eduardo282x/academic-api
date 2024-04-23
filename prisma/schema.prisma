@@ -9,11 +9,12 @@ datasource db {
 }
 
 model activities {
-  activityId   Int      @id @default(autoincrement())
-  activityName String
-  topidId      Int
-  topics       topics   @relation(fields: [topidId], references: [topicIc], map: "Activities_topidId_fkey")
-  grades       grades[]
+  activityId          Int      @id @default(autoincrement())
+  activityName        String
+  activityDescription String   @db.VarChar(200)
+  topidId             Int
+  topics              topics   @relation(fields: [topidId], references: [topicIc], map: "Activities_topidId_fkey")
+  grades              grades[]
 
   @@index([topidId], map: "Activities_topidId_fkey")
 }
@@ -72,8 +73,8 @@ model students {
 model subjects {
   subjectId          Int          @id @default(autoincrement())
   subjectName        String
-  subjectDescription String       @db.VarChar(200)
   classroomId        Int
+  subjectDescription String       @db.VarChar(200)
   attendance         attendance[]
   classrooms         classrooms   @relation(fields: [classroomId], references: [classroomId], map: "Subjects_classroomId_fkey")
   topics             topics[]
@@ -82,11 +83,12 @@ model subjects {
 }
 
 model topics {
-  topicIc    Int          @id @default(autoincrement())
-  topicName  String
-  subjectId  Int
-  activities activities[]
-  subjects   subjects     @relation(fields: [subjectId], references: [subjectId], map: "Topics_subjectId_fkey")
+  topicIc          Int          @id @default(autoincrement())
+  topicName        String
+  topicDescription String       @db.VarChar(200)
+  subjectId        Int
+  activities       activities[]
+  subjects         subjects     @relation(fields: [subjectId], references: [subjectId], map: "Topics_subjectId_fkey")
 
   @@index([subjectId], map: "Topics_subjectId_fkey")
 }

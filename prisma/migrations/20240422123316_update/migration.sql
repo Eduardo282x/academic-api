@@ -12,7 +12,7 @@
 -- INSERT INTO `classrooms` (`classroomId`, `grade`) VALUES (NULL, '6to Grado');
 -- INSERT INTO `subjects` (`subjectId`, `subjectName`, `classroomId`) VALUES (NULL, 'Geometria', '1');
 -- INSERT INTO `students` (`studentId`, `userId`, `classroomId`) VALUES (NULL, '3', '1');
--- INSERT INTO `topics` (`topicIc`, `topicName`, `subjectId`) VALUES (NULL, 'Actividad 1', '1');
+-- INSERT INTO `topics` (`topicIc`, `topicName`, `subjectId`) VALUES (NULL, 'Tema 1', '1');
 -- INSERT INTO `activities` (`activityId`, `activityName`, `topidId`) VALUES (NULL, 'Tarea 1', '1');
 -- INSERT INTO `attendance` (`attendanceId`, `studentId`, `subjectsId`, `date`, `attended`) VALUES (NULL, '1', '1', '2024-04-22 08:38:40.000', '1');
 -- INSERT INTO `grades` (`gradesId`, `studendId`, `activityId`, `score`) VALUES (NULL, '1', '1', '18');
