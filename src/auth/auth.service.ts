@@ -10,8 +10,6 @@ export class AuthService {
     constructor(private prisma: PrismaService) { }
 
     async login(bodyLogin: BodyLogin): Promise<DtoLogin> {
-        console.log(bodyLogin);
-        
         const findUser: users = await this.prisma.users.findFirst({
             where: {
                 username: bodyLogin.username,

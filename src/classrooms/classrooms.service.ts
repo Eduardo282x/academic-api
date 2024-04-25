@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { classrooms } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
-import { DtoAddClassrooms, DtoClassrooms } from 'src/dtos/classrooms.dto';
+import { DtoAddClassrooms, DtoPutClassrooms } from 'src/dtos/classrooms.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class ClassroomsService {
         baseResponse.message = 'Salon agregado.';
         return baseResponse
     }
-    async putClassrooms(classroom: DtoClassrooms): Promise<DtoBaseResponse>{
+    async putClassrooms(classroom: DtoPutClassrooms): Promise<DtoBaseResponse>{
         await this.prisma.classrooms.update({
             data:{
                 grade: classroom.grade
@@ -42,10 +42,10 @@ export class ClassroomsService {
         baseResponse.message = 'Salon actualizado.';
         return baseResponse
     }
-    async deleteClassrooms(classroom: DtoClassrooms): Promise<DtoBaseResponse>{
+    async deleteClassrooms(classroom: string): Promise<DtoBaseResponse>{
         await this.prisma.classrooms.delete({
             where: {
-                classroomId: classroom.classroomId
+                classroomId: Number(classroom)
             }
         });
         baseResponse.message = 'Salon eliminado.';

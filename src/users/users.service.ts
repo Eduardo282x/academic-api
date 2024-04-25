@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { students, users } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
-import { BodyStudents, DtoStudents, DtoUsers, QueryUsers } from 'src/dtos/users.dto';
+import { DtoAddStudents, DtoPuStudents, DtoStudents, DtoUsers, QueryUsers } from 'src/dtos/users.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -51,7 +51,6 @@ export class UsersService {
     }
 
     async getStudents(rolId: QueryUsers): Promise<DtoStudents[]> {
-        console.log(rolId);
         const getStudentsClassrooms: students[] = await this.prisma.students.findMany({
             include: {
                 classrooms: true,
@@ -78,14 +77,14 @@ export class UsersService {
         return studentsParse;
     }
 
-    async addStudents(bodyStudent: BodyStudents): Promise<DtoBaseResponse>{
+    async addStudents(bodyStudent: DtoAddStudents): Promise<DtoBaseResponse>{
         const createStudent = await this.prisma.users.create({
             data: {
                 name: bodyStudent.name,
                 lastname: bodyStudent.lastname,
                 username: bodyStudent.username,
-                age: bodyStudent.age,
-                password: bodyStudent.password,
+                age: String(bodyStudent.age),
+                password: '123',
                 email: bodyStudent.email,
                 rolId: 3
             }
@@ -95,13 +94,71 @@ export class UsersService {
             await this.prisma.students.create({
                 data: {
                     userId: createStudent.id,
-                    classroomId: bodyStudent.classroomsId
+                    classroomId: Number(bodyStudent.classroomId)
                 }
             })
         } else {
             throw new BadRequestException('Ha ocurrido un error inesperado');
         }
         baseResponse.message = 'Se agrego correctamente.';
+        return baseResponse;
+    }
+
+    async updateStudents(bodyStudent: DtoPuStudents): Promise<DtoBaseResponse>{
+        const updateStudent = await this.prisma.users.update({
+            data: {
+                name: bodyStudent.name,
+                lastname: bodyStudent.lastname,
+                username: bodyStudent.username,
+                age: String(bodyStudent.age),
+                email: bodyStudent.email,
+            },
+            where: {
+                id: bodyStudent.userId
+            }
+        })
+
+        if(updateStudent){
+            const findStudent: students = await this.prisma.students.findFirst({
+                where: {
+                    userId: bodyStudent.userId
+                }
+            })
+            await this.prisma.students.update({
+                data: {
+                    classroomId: Number(bodyStudent.classroomId)
+                }, 
+                where: {
+                    studentId: findStudent.studentId
+                }
+            })
+        } else {
+            throw new BadRequestException('Ha ocurrido un error inesperado');
+        }
+        baseResponse.message = 'Se actualizo correctamente.';
+        return baseResponse;
+    }
+
+    async deleteStudents(id: string): Promise<DtoBaseResponse>{
+        const findStudent: students = await this.prisma.students.findFirst({
+            where: {
+                userId: Number(id)
+            }
+        });
+        
+        await this.prisma.students.delete({
+            where: {
+                studentId: findStudent.studentId
+            }
+        })
+        
+        await this.prisma.users.delete({
+            where: {
+                id: Number(id)
+            }
+        });
+
+        baseResponse.message = 'Se elimino correctamente.';
         return baseResponse;
     }
 }

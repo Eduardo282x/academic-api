@@ -21,7 +21,7 @@ export class DtoStudents {
     classroomsId: number;
     classrooms: string;
 }
-export class BodyStudents {
+export class DtoAddStudents {
     @IsString()
     name: string;
     @IsString()
@@ -30,12 +30,26 @@ export class BodyStudents {
     username: string;
     @IsString()
     email: string;
-    @IsString()
-    age: string;
-    @IsString()
-    password: string;
     @IsNumber()
-    classroomsId: number;
+    age: number;
+    @IsString()
+    classroomId: string;
+}
+export class DtoPuStudents {
+    @IsNumber()
+    userId: number;
+    @IsString()
+    name: string;
+    @IsString()
+    lastname: string;
+    @IsString()
+    username: string;
+    @IsString()
+    email: string;
+    @IsNumber()
+    age: number;
+    @IsString()
+    classroomId: string;
 }
 
 export class QueryUsers {

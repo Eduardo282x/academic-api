@@ -1,6 +1,6 @@
 import { IsNumber, IsString } from "class-validator";
 
-export class DtoClassrooms {
+export class DtoPutClassrooms {
     @IsString()
     grade: string;
     @IsNumber()
