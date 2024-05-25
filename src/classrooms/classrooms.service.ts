@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { classrooms } from '@prisma/client';
+import { Classrooms } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
 import { DtoAddClassrooms, DtoPutClassrooms } from 'src/dtos/classrooms.dto';
@@ -10,14 +10,14 @@ export class ClassroomsService {
 
     constructor(private prisma: PrismaService){}
 
-    async getClassrooms(): Promise<classrooms[]>{
-        const classrooms: classrooms[] = await this.prisma.classrooms.findMany();
+    async getClassrooms(): Promise<Classrooms[]>{
+        const classrooms: Classrooms[] = await this.prisma.classrooms.findMany();
 
         return classrooms
     }
 
     async addClassrooms(classroom: DtoAddClassrooms): Promise<DtoBaseResponse>{
-        const classrooms: classrooms = await this.prisma.classrooms.create({
+        const classrooms: Classrooms = await this.prisma.classrooms.create({
             data: {
                 grade: classroom.grade
             }

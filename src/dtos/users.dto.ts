@@ -1,3 +1,4 @@
+import { Extensions } from "@prisma/client/runtime/library";
 import { IsNumber, IsString } from "class-validator";
 
 export class DtoUsers {
@@ -21,6 +22,18 @@ export class DtoStudents {
     classroomsId: number;
     classrooms: string;
 }
+export class DtoAddUser {
+    @IsString()
+    name: string;
+    @IsString()
+    lastname: string;
+    @IsString()
+    username: string;
+    @IsString()
+    email: string;
+    @IsNumber()
+    age: number;
+}
 export class DtoAddStudents {
     @IsString()
     name: string;
@@ -35,9 +48,8 @@ export class DtoAddStudents {
     @IsString()
     classroomId: string;
 }
-export class DtoPuStudents {
-    @IsNumber()
-    userId: number;
+
+export class DtoBaseUsers {
     @IsString()
     name: string;
     @IsString()
@@ -48,6 +60,14 @@ export class DtoPuStudents {
     email: string;
     @IsNumber()
     age: number;
+}
+export class DtoPutTeachers extends DtoBaseUsers {
+    @IsNumber()
+    id: number;
+}
+export class DtoPutStudents extends DtoPutTeachers{
+    @IsNumber()
+    userId: number;
     @IsString()
     classroomId: string;
 }

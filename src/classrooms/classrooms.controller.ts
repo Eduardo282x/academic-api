@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ClassroomsService } from './classrooms.service';
-import { classrooms } from '@prisma/client';
+import { Classrooms } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { DtoAddClassrooms, DtoPutClassrooms } from 'src/dtos/classrooms.dto';
 
@@ -10,7 +10,7 @@ export class ClassroomsController {
     constructor(private classroomsService: ClassroomsService){}
 
     @Get()
-    async getClassrooms(): Promise<classrooms[]>{
+    async getClassrooms(): Promise<Classrooms[]>{
         return await this.classroomsService.getClassrooms();
     }
 

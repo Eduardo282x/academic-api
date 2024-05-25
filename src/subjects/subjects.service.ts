@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { subjects } from '@prisma/client';
+import { Subjects } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
 import { BodyAddSubject, BodyUpdateSubject, DtoSubjects } from 'src/dtos/subjects.dto';
@@ -11,7 +11,7 @@ export class SubjectsService {
     constructor(private prisma: PrismaService){}
 
     async getSubjects(): Promise<DtoSubjects[]>{
-        const getSubjects: subjects[] = await this.prisma.subjects.findMany({
+        const getSubjects: Subjects[] = await this.prisma.subjects.findMany({
             include: {
                 classrooms: true
             }
@@ -30,7 +30,7 @@ export class SubjectsService {
     }
 
     async addSubjects(bodySubjects: BodyAddSubject): Promise<DtoBaseResponse>{
-        const createSubject: subjects = await this.prisma.subjects.create({
+        const createSubject: Subjects = await this.prisma.subjects.create({
             data: {
                 subjectName: bodySubjects.subjectName,
                 classroomId: bodySubjects.classroomId,
@@ -47,7 +47,7 @@ export class SubjectsService {
     }
 
     async putSubjects(bodySubjects: BodyUpdateSubject): Promise<DtoBaseResponse>{
-        const updateSubject: subjects = await this.prisma.subjects.update({
+        const updateSubject: Subjects = await this.prisma.subjects.update({
             data: {
                 subjectName: bodySubjects.subjectName,
                 classroomId: bodySubjects.classroomId,

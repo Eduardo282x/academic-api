@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { users } from '@prisma/client';
+import { Users } from '@prisma/client';
 import { BodyLogin, BodyRegister, DtoLogin } from 'src/dtos/auth.dto';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -10,7 +10,7 @@ export class AuthService {
     constructor(private prisma: PrismaService) { }
 
     async login(bodyLogin: BodyLogin): Promise<DtoLogin> {
-        const findUser: users = await this.prisma.users.findFirst({
+        const findUser: Users = await this.prisma.users.findFirst({
             where: {
                 username: bodyLogin.username,
                 password: bodyLogin.password

@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { students, users } from '@prisma/client';
+import { Students, Users } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
-import { DtoAddStudents, DtoPuStudents, DtoStudents, DtoUsers, QueryUsers } from 'src/dtos/users.dto';
+import { DtoAddStudents, DtoAddUser, DtoPutStudents, DtoPutTeachers, DtoStudents, DtoUsers, QueryUsers } from 'src/dtos/users.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class UsersService {
     constructor(private prisma: PrismaService) { }
 
     async getUsers(): Promise<DtoUsers[]> {
-        const users: users[] = await this.prisma.users.findMany({
+        const users: Users[] = await this.prisma.users.findMany({
             include: {
                 roles: true
             }
@@ -29,7 +29,7 @@ export class UsersService {
     }
 
     async getTeachers(): Promise<DtoUsers[]> {
-        const users: users[] = await this.prisma.users.findMany({
+        const users: Users[] = await this.prisma.users.findMany({
             where: {
                 rolId: 2
             },
@@ -50,8 +50,26 @@ export class UsersService {
         return usersParse;
     }
 
+    async addTeacher(bodyStudent: DtoAddUser): Promise<DtoBaseResponse>{
+        const createTeacher = await this.prisma.users.create({
+            data: {
+                name: bodyStudent.name,
+                lastname: bodyStudent.lastname,
+                username: bodyStudent.username,
+                age: String(bodyStudent.age),
+                password: '123',
+                email: bodyStudent.email,
+                rolId: 2
+            }
+        })
+
+        baseResponse.message = 'Se agrego correctamente.';
+        return baseResponse;
+    }
+
+
     async getStudents(rolId: QueryUsers): Promise<DtoStudents[]> {
-        const getStudentsClassrooms: students[] = await this.prisma.students.findMany({
+        const getStudentsClassrooms: Students[] = await this.prisma.students.findMany({
             include: {
                 classrooms: true,
                 users: true
@@ -104,7 +122,24 @@ export class UsersService {
         return baseResponse;
     }
 
-    async updateStudents(bodyStudent: DtoPuStudents): Promise<DtoBaseResponse>{
+    async updateTeacher(bodyStudent: DtoPutTeachers): Promise<DtoBaseResponse>{
+        const updateStudent = await this.prisma.users.update({
+            data: {
+                name: bodyStudent.name,
+                lastname: bodyStudent.lastname,
+                username: bodyStudent.username,
+                age: String(bodyStudent.age),
+                email: bodyStudent.email,
+            },
+            where: {
+                id: bodyStudent.id
+            }
+        })
+
+        baseResponse.message = 'Se actualizo correctamente.';
+        return baseResponse;
+    }
+    async updateStudents(bodyStudent: DtoPutStudents): Promise<DtoBaseResponse>{
         const updateStudent = await this.prisma.users.update({
             data: {
                 name: bodyStudent.name,
@@ -119,7 +154,7 @@ export class UsersService {
         })
 
         if(updateStudent){
-            const findStudent: students = await this.prisma.students.findFirst({
+            const findStudent: Students = await this.prisma.students.findFirst({
                 where: {
                     userId: bodyStudent.userId
                 }
@@ -139,8 +174,25 @@ export class UsersService {
         return baseResponse;
     }
 
+    async deleteTeacher(id: string): Promise<DtoBaseResponse>{
+        const findStudent: Students = await this.prisma.students.findFirst({
+            where: {
+                userId: Number(id)
+            }
+        });
+
+        await this.prisma.users.delete({
+            where: {
+                id: Number(id)
+            }
+        });
+
+        baseResponse.message = 'Se elimino correctamente.';
+        return baseResponse;
+    }
+
     async deleteStudents(id: string): Promise<DtoBaseResponse>{
-        const findStudent: students = await this.prisma.students.findFirst({
+        const findStudent: Students = await this.prisma.students.findFirst({
             where: {
                 userId: Number(id)
             }

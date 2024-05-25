@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { DtoAddStudents, DtoPuStudents, DtoStudents, DtoUsers } from 'src/dtos/users.dto';
+import { DtoAddStudents, DtoAddUser, DtoPutStudents, DtoPutTeachers, DtoStudents, DtoUsers } from 'src/dtos/users.dto';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 
 @Controller('users')
@@ -16,6 +16,19 @@ export class UsersController {
     async getTeachers(): Promise<DtoUsers[]> {
         return await this.usersServices.getTeachers();
     }
+    @Post('/teachers')
+    async addTeachers(@Body() teacher: DtoAddUser): Promise<DtoBaseResponse> {
+        return await this.usersServices.addTeacher(teacher);
+    }
+    @Put('/teachers')
+    async updateTeachers(@Body() bodyTeacher: DtoPutTeachers): Promise<DtoBaseResponse> {
+        return await this.usersServices.updateTeacher(bodyTeacher);
+    }
+    @Delete('/teachers/:id')
+    async deleteTeachers(@Param('id') id: string): Promise<DtoBaseResponse> {
+        return await this.usersServices.deleteTeacher(id);
+    }
+
     @Get('/students')
     async getStudents(@Query() rolId): Promise<DtoStudents[]> {
         return await this.usersServices.getStudents(rolId);
@@ -26,7 +39,7 @@ export class UsersController {
         return await this.usersServices.addStudents(bodyStudent);
     }
     @Put('/students')
-    async updateStudents(@Body() bodyStudent: DtoPuStudents): Promise<DtoBaseResponse> {
+    async updateStudents(@Body() bodyStudent: DtoPutStudents): Promise<DtoBaseResponse> {
         return await this.usersServices.updateStudents(bodyStudent);
     }
     @Delete('/students/:id')
