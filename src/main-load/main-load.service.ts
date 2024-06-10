@@ -31,7 +31,7 @@ export class MainLoadService {
                     {
                         name: 'Eduardo',
                         lastname: 'Rojas',
-                        username: 'Eduardo28',
+                        username: 'Profesor02',
                         password: '1234',
                         email: 'eduardo@gmail.com',
                         age: '22',
@@ -46,6 +46,51 @@ export class MainLoadService {
                         age: '22',
                         rolId: 3
                     },
+                    {
+                        name: 'Ana',
+                        lastname: 'Martinez',
+                        username: 'AnaMtz03',
+                        password: '12345678',
+                        email: 'ana.martinez@gmail.com',
+                        age: '20',
+                        rolId: 3
+                    },
+                    {
+                        name: 'Luis',
+                        lastname: 'Gonzalez',
+                        username: 'LuisGon05',
+                        password: '12345678',
+                        email: 'luis.gonzalez@gmail.com',
+                        age: '23',
+                        rolId: 3
+                    },
+                    {
+                        name: 'Carlos',
+                        lastname: 'Perez',
+                        username: 'CarlosP88',
+                        password: '12345678',
+                        email: 'carlos.perez@gmail.com',
+                        age: '21',
+                        rolId: 3
+                    },
+                    {
+                        name: 'María',
+                        lastname: 'Fernandez',
+                        username: 'MariaFdez91',
+                        password: '12345678',
+                        email: 'maria.fernandez@gmail.com',
+                        age: '22',
+                        rolId: 3
+                    },
+                    {
+                        name: 'Sofía',
+                        lastname: 'Lopez',
+                        username: 'SofiaLpz99',
+                        password: '12345678',
+                        email: 'sofia.lopez@gmail.com',
+                        age: '19',
+                        rolId: 3
+                    }
                 ]
             });
 
@@ -63,27 +108,74 @@ export class MainLoadService {
                 }
             });
 
-            await this.prisma.students.create({
-                data: {
-                    userId: 3,
-                    classroomId: 1
-                }
+            await this.prisma.students.createMany({
+                data: [
+                    {
+                        userId: 3,
+                        classroomId: 1
+                    },
+                    {
+                        userId: 4,
+                        classroomId: 1
+                    },
+                    {
+                        userId: 5,
+                        classroomId: 1
+                    },
+                    {
+                        userId: 6,
+                        classroomId: 1
+                    },
+                    {
+                        userId: 7,
+                        classroomId: 1
+                    },
+                    {
+                        userId: 8,
+                        classroomId: 1
+                    }
+                ]
             });
 
-            await this.prisma.topics.create({
-                data: {
-                    topicDescription: '',
-                    topicName: 'Tema 1',
-                    subjectId: 1
-                }
+            await this.prisma.topics.createMany({
+                data: [
+                    {
+                        topicDescription: 'Este tema introduce a los estudiantes a las formas más fundamentales de la geometría. Aprenderán a reconocer y nombrar figuras geométricas como círculos, cuadrados, triángulos y rectángulos. La comprensión de estas formas es esencial para el estudio posterior de la geometría y ayuda a los estudiantes a identificar y clasificar objetos en su entorno.',
+                        topicName: 'Figuras Geométricas Básicas',
+                        subjectId: 1
+                    },
+                    {
+                        topicDescription: 'En este tema, los estudiantes exploran dos conceptos importantes de la geometría plana: el perímetro, que es la distancia alrededor de una figura, y el área, que es la medida del espacio dentro de una figura. A través de actividades prácticas, los estudiantes aprenderán a calcular estas medidas en varias figuras, lo que les proporcionará una comprensión práctica de cómo la geometría se aplica en la vida cotidiana.',
+                        topicName: 'Perímetro y Área',
+                        subjectId: 1
+                    },
+                    {
+                        topicDescription: 'La simetría y los patrones son fundamentales en el mundo natural y en el diseño humano. Este tema permite a los estudiantes observar la simetría en objetos y seres vivos, así como crear sus propios patrones simétricos. Al estudiar la simetría, los estudiantes desarrollan un sentido de equilibrio y proporción, mientras que los patrones les enseñan sobre la repetición y la secuencia en el diseño.',
+                        topicName: 'Simetría y Patrones',
+                        subjectId: 1
+                    },
+
+                ]
             });
 
-            await this.prisma.activities.create({
-                data: {
-                    activityDescription: '',
-                    activityName: '',
-                    topidId: 1
-                }
+            await this.prisma.activities.createMany({
+                data: [
+                    {
+                        activityDescription: 'Los estudiantes pueden usar una aplicación de dibujo para crear un collage de figuras geométricas básicas, identificando círculos, cuadrados, triángulos y rectángulos.',
+                        activityName: 'Identificación de Figuras',
+                        topidId: 1
+                    },
+                    {
+                        activityDescription: 'Proporciona a los estudiantes diferentes figuras geométricas y pídeles que calculen el perímetro utilizando la fórmula adecuada.',
+                        activityName: 'Cálculo de Perímetro',
+                        topidId: 2
+                    },
+                    {
+                        activityDescription: 'Utiliza papel plegado para crear patrones simétricos y luego dibuja los patrones resultantes.',
+                        activityName: 'Creación de Patrones Simétricos',
+                        topidId: 3
+                    },
+                ]
             });
 
             await this.prisma.attendance.create({
@@ -108,7 +200,7 @@ export class MainLoadService {
                 message: `Se ha cargado correctamente todos los datos`,
                 statusCode: 200
             }
-            
+
             return response;
         }
         catch (err) {
