@@ -1,0 +1,92 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Activities {
+  activityId          Int      @id @default(autoincrement())
+  activityName        String
+  activityDescription String   @db.VarChar(200)
+  topidId             Int
+  topics              Topics   @relation(fields: [topidId], references: [topicIc])
+  grades              Grades[]
+}
+
+model Attendance {
+  attendanceId Int      @id @default(autoincrement())
+  studentId    Int
+  subjectsId   Int
+  date         DateTime
+  attended     Boolean
+  students     Students @relation(fields: [studentId], references: [studentId])
+  subjects     Subjects @relation(fields: [subjectsId], references: [subjectId])
+}
+
+model Classrooms {
+  classroomId Int        @id @default(autoincrement())
+  grade       String
+  students    Students[]
+  subjects    Subjects[]
+}
+
+model Grades {
+  gradesId   Int        @id @default(autoincrement())
+  studendId  Int
+  activityId Int
+  score      Decimal    @db.Decimal(10, 2)
+  activities Activities @relation(fields: [activityId], references: [activityId])
+  students   Students   @relation(fields: [studendId], references: [studentId])
+}
+
+model Roles {
+  id    Int     @id @default(autoincrement())
+  rol   String
+  users Users[]
+}
+
+model Students {
+  studentId   Int          @id @default(autoincrement())
+  userId      Int
+  classroomId Int
+  attendance  Attendance[]
+  grades      Grades[]
+  classrooms  Classrooms   @relation(fields: [classroomId], references: [classroomId])
+  users       Users        @relation(fields: [userId], references: [id])
+}
+
+model Subjects {
+  subjectId          Int          @id @default(autoincrement())
+  subjectName        String
+  classroomId        Int
+  subjectDescription String       @db.VarChar(200)
+  attendance         Attendance[]
+  classrooms         Classrooms   @relation(fields: [classroomId], references: [classroomId])
+  topics             Topics[]
+}
+
+model Topics {
+  topicIc          Int          @id @default(autoincrement())
+  topicName        String
+  topicDescription String       @db.VarChar(200)
+  subjectId        Int
+  activities       Activities[]
+  subjects         Subjects     @relation(fields: [subjectId], references: [subjectId])
+}
+
+model Users {
+  id       Int        @id @default(autoincrement())
+  name     String
+  lastname String
+  username String
+  password String
+  email    String
+  age      String
+  rolId    Int
+  students Students[]
+  roles    Roles      @relation(fields: [rolId], references: [id])
+}
