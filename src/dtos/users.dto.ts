@@ -30,6 +30,8 @@ export class DtoAddUser {
     @IsString()
     username: string;
     @IsString()
+    identify: string;
+    @IsString()
     email: string;
     @IsNumber()
     age: number;
@@ -43,6 +45,8 @@ export class DtoAddStudents {
     username: string;
     @IsString()
     email: string;
+    @IsString()
+    identify: string;
     @IsNumber()
     age: number;
     @IsString()
@@ -58,6 +62,8 @@ export class DtoBaseUsers {
     username: string;
     @IsString()
     email: string;
+    @IsString()
+    identify: string;
     @IsNumber()
     age: number;
 }

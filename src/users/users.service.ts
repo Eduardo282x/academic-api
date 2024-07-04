@@ -59,6 +59,7 @@ export class UsersService {
                 age: String(bodyStudent.age),
                 password: '123',
                 email: bodyStudent.email,
+                identify: bodyStudent.identify,
                 rolId: 2
             }
         })
@@ -104,6 +105,7 @@ export class UsersService {
                 age: String(bodyStudent.age),
                 password: '123',
                 email: bodyStudent.email,
+                identify: bodyStudent.identify,
                 rolId: 3
             }
         })
@@ -130,11 +132,16 @@ export class UsersService {
                 username: bodyStudent.username,
                 age: String(bodyStudent.age),
                 email: bodyStudent.email,
+                identify: bodyStudent.identify
             },
             where: {
                 id: bodyStudent.id
             }
-        })
+        });
+
+        if(!updateStudent){
+            throw new BadRequestException('Ha ocurrido un error.');
+        }
 
         baseResponse.message = 'Se actualizo correctamente.';
         return baseResponse;
