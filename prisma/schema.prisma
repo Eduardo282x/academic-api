@@ -27,6 +27,15 @@ model Activities {
   files               Files[]
 }
 
+model Topics {
+  topicIc          Int          @id @default(autoincrement())
+  topicName        String
+  topicDescription String       @db.VarChar(200)
+  subjectId        Int
+  activities       Activities[]
+  subjects         Subjects     @relation(fields: [subjectId], references: [subjectId])
+}
+
 model Attendance {
   attendanceId Int      @id @default(autoincrement())
   studentId    Int
@@ -78,15 +87,6 @@ model Subjects {
   attendance         Attendance[]
   classrooms         Classrooms   @relation(fields: [classroomId], references: [classroomId])
   topics             Topics[]
-}
-
-model Topics {
-  topicIc          Int          @id @default(autoincrement())
-  topicName        String
-  topicDescription String       @db.VarChar(200)
-  subjectId        Int
-  activities       Activities[]
-  subjects         Subjects     @relation(fields: [subjectId], references: [subjectId])
 }
 
 model Users {

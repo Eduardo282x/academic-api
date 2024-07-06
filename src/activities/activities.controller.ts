@@ -4,7 +4,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Observable, of } from 'rxjs';
 import { join } from 'path';
-import { DtoActivities } from 'src/dtos/activities.dto';
+import { DtoActivities, DtoActivitiesValidate } from 'src/dtos/activities.dto';
 
 @Controller('activities')
 export class ActivitiesController {
@@ -18,6 +18,10 @@ export class ActivitiesController {
     async getActivities(@Param('idFile') idFile: number, @Res() res): Promise<Observable<Object>> {
         const fileName = await this.activitiesServices.findFile(idFile);
         return of(res.sendFile(join(process.cwd(), 'files_system/' + fileName.filePath)));
+    }
+    @Post('/consult')
+    async postConsultActivities(@Body() activityConsult: DtoActivitiesValidate): Promise<string> {
+        return this.activitiesServices.consultFileExist(activityConsult);
     }
 
     @Post()

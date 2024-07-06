@@ -8,9 +8,10 @@ import { MainLoadModule } from './main-load/main-load.module';
 import { TopicsModule } from './topics/topics.module';
 import { AttendanceModule } from './attendance/attendance.module';
 import { ActivitiesModule } from './activities/activities.module';
+import { GradesModule } from './grades/grades.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, ClassroomsModule, SubjectsModule, MainLoadModule, TopicsModule, AttendanceModule, ActivitiesModule],
+  imports: [AuthModule, UsersModule, ClassroomsModule, SubjectsModule, MainLoadModule, TopicsModule, AttendanceModule, ActivitiesModule, GradesModule],
   providers: [PrismaService],
 })
 export class AppModule {}

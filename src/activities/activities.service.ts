@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Files } from '@prisma/client';
-import { DtoActivities } from 'src/dtos/activities.dto';
+import { DtoActivities, DtoActivitiesValidate } from 'src/dtos/activities.dto';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -25,6 +25,21 @@ export class ActivitiesService {
 
         baseResponse.message='Archivo subido exitosamente.';
         return baseResponse;
+    }
+
+    async consultFileExist(activityConsult: DtoActivitiesValidate): Promise<string> {
+        const findFileExist = await this.prismaService.files.findFirst({
+            where: {
+                activityId: activityConsult.activityId,
+                studentId: activityConsult.studentId
+            }
+        });
+
+        if(!findFileExist){
+            return '';
+        }
+
+        return findFileExist.filePath;
     }
 
     async findFile(idFile: number): Promise<Files> {

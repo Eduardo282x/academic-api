@@ -14,11 +14,18 @@ export class TopicsService {
     async getTopics(): Promise<Topics[]> {
         const topicsAndActivities = await this.prismaService.topics.findMany({
             include: {
-                activities: true
-            }
+                activities: true,
+            },
         });
+
+        // const joinsTables = await this.prismaService.$queryRaw``;
+
+
+        
+
         return topicsAndActivities;
     }
+
     async addTopics(newTopic: DtoAddTopics): Promise<DtoBaseResponse> {
         const createTopics = await this.prismaService.topics.create({
             data: {
