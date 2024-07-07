@@ -30,8 +30,8 @@ export class UsersController {
     }
 
     @Get('/students')
-    async getStudents(@Query() rolId): Promise<DtoStudents[]> {
-        return await this.usersServices.getStudents(rolId);
+    async getStudents(): Promise<DtoStudents[]> {
+        return await this.usersServices.getStudents();
     }
 
     @Post('/students')

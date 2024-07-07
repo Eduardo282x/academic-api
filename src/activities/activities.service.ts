@@ -27,7 +27,7 @@ export class ActivitiesService {
         return baseResponse;
     }
 
-    async consultFileExist(activityConsult: DtoActivitiesValidate): Promise<string> {
+    async consultFileExist(activityConsult: DtoActivitiesValidate): Promise<Files | null> {
         const findFileExist = await this.prismaService.files.findFirst({
             where: {
                 activityId: activityConsult.activityId,
@@ -36,10 +36,10 @@ export class ActivitiesService {
         });
 
         if(!findFileExist){
-            return '';
+            return null;
         }
 
-        return findFileExist.filePath;
+        return findFileExist;
     }
 
     async findFile(idFile: number): Promise<Files> {

@@ -1,9 +1,10 @@
-import { BadRequestException, Body, Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, Post, Query, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Query, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ActivitiesService } from './activities.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Observable, of } from 'rxjs';
 import { join } from 'path';
+import { Files } from '@prisma/client';
 import { DtoActivities, DtoActivitiesValidate } from 'src/dtos/activities.dto';
 
 @Controller('activities')
@@ -20,7 +21,7 @@ export class ActivitiesController {
         return of(res.sendFile(join(process.cwd(), 'files_system/' + fileName.filePath)));
     }
     @Post('/consult')
-    async postConsultActivities(@Body() activityConsult: DtoActivitiesValidate): Promise<string> {
+    async postConsultActivities(@Body() activityConsult: DtoActivitiesValidate): Promise<Files | null> {
         return this.activitiesServices.consultFileExist(activityConsult);
     }
 

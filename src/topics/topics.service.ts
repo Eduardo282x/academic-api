@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Topics } from '@prisma/client';
+import { Activities, Topics } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
-import { DtoAddTopics, DtoPutTopics } from 'src/dtos/topics.dto';
+import { DtoAddActivity, DtoAddTopics, DtoPutActivity, DtoPutTopics } from 'src/dtos/topics.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -18,12 +18,13 @@ export class TopicsService {
             },
         });
 
-        // const joinsTables = await this.prismaService.$queryRaw``;
-
-
-        
-
         return topicsAndActivities;
+    }
+
+    async getActivities(): Promise<Activities[]> {
+        const activities = await this.prismaService.activities.findMany();
+
+        return activities;
     }
 
     async addTopics(newTopic: DtoAddTopics): Promise<DtoBaseResponse> {
@@ -39,6 +40,21 @@ export class TopicsService {
         }
 
         baseResponse.message = 'Tema creado exitosamente';
+        return baseResponse;
+    }
+    async addActivity(newActivity: DtoAddActivity): Promise<DtoBaseResponse> {
+        const createActivity = await this.prismaService.activities.create({
+            data: {
+                activityDescription: newActivity.activityDescription,
+                activityName: newActivity.activityName,
+                topidId: newActivity.topicIc
+            }
+        });
+        if (!createActivity) {
+            throw new BadRequestException('No se pudo crear la actividad.');
+        }
+
+        baseResponse.message = 'Actividad creado exitosamente';
         return baseResponse;
     }
     async updateTopics(updateTopic: DtoPutTopics): Promise<DtoBaseResponse> {
@@ -59,6 +75,25 @@ export class TopicsService {
         }
 
         baseResponse.message = 'Tema actualizado exitosamente';
+        return baseResponse;
+    }
+    async updateActivity(updateActivity: DtoPutActivity): Promise<DtoBaseResponse> {
+        const updateActivities = await this.prismaService.activities.update({
+            data: {
+                activityDescription: updateActivity.activityDescription,
+                activityName: updateActivity.activityName,
+            },
+            where:
+            {
+                activityId: updateActivity.activityId
+            }
+        });
+
+        if (!updateActivities) {
+            throw new BadRequestException('No se pudo actualizar la actividad.');
+        }
+
+        baseResponse.message = 'Actividad actualizado exitosamente';
         return baseResponse;
     }
     async deleteTopics(topicId: string): Promise<DtoBaseResponse> {

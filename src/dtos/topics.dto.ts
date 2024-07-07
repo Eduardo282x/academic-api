@@ -5,10 +5,21 @@ export class DtoAddTopics {
     topicName: string;
     @IsString()
     topicDescription: string;
-    // @IsNumber()
-    // subjectId: number;
 }
 export class DtoPutTopics extends DtoAddTopics {
     @IsNumber()
     topicIc: number;
+} 
+
+export class DtoAddActivity {
+    @IsString()
+    activityName: string;
+    @IsString()
+    activityDescription: string;
+    @IsNumber()
+    topicIc: number;
+}
+export class DtoPutActivity extends DtoAddActivity {
+    @IsNumber()
+    activityId: number;
 } 

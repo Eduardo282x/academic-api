@@ -69,7 +69,7 @@ export class UsersService {
     }
 
 
-    async getStudents(rolId: QueryUsers): Promise<DtoStudents[]> {
+    async getStudents(): Promise<DtoStudents[]> {
         const getStudentsClassrooms: Students[] = await this.prisma.students.findMany({
             include: {
                 classrooms: true,
