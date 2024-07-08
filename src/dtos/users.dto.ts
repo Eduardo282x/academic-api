@@ -71,13 +71,9 @@ export class DtoPutTeachers extends DtoBaseUsers {
     @IsNumber()
     id: number;
 }
-export class DtoPutStudents extends DtoPutTeachers{
+export class DtoPutStudents extends DtoBaseUsers{
     @IsNumber()
     userId: number;
     @IsString()
     classroomId: string;
-}
-
-export class QueryUsers {
-    rolId: number;
 }

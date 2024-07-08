@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Students, Users } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
-import { DtoAddStudents, DtoAddUser, DtoPutStudents, DtoPutTeachers, DtoStudents, DtoUsers, QueryUsers } from 'src/dtos/users.dto';
+import { DtoAddStudents, DtoAddUser, DtoPutStudents, DtoPutTeachers, DtoStudents, DtoUsers } from 'src/dtos/users.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -90,6 +90,7 @@ export class UsersService {
             us.username = us.users.username;
             us.email = us.users.email;
             us.age = us.users.age;
+            us.identify = us.users.identify;
             delete us.users
         });
 
@@ -154,6 +155,7 @@ export class UsersService {
                 username: bodyStudent.username,
                 age: String(bodyStudent.age),
                 email: bodyStudent.email,
+                identify: bodyStudent.identify
             },
             where: {
                 id: bodyStudent.userId
