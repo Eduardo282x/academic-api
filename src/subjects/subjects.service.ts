@@ -30,6 +30,17 @@ export class SubjectsService {
     }
 
     async addSubjects(bodySubjects: BodyAddSubject): Promise<DtoBaseResponse>{
+        const findSubject = this.prisma.subjects.findFirst({
+            where:{
+                subjectName: bodySubjects.subjectName,
+                classroomId: bodySubjects.classroomId
+            }
+        });
+
+        if(findSubject){
+            throw new BadRequestException('Esta materia ya se encuentra registrada.');
+        }
+
         const createSubject: Subjects = await this.prisma.subjects.create({
             data: {
                 subjectName: bodySubjects.subjectName,
@@ -39,7 +50,7 @@ export class SubjectsService {
         });
 
         if(!createSubject){
-            throw new BadRequestException('No se encontraron materias');
+            throw new BadRequestException('Ha ocurrido un error.');
         }
 
         baseResponse.message = 'Materia agregada.'

@@ -11,9 +11,19 @@ export class ActivitiesService {
     constructor(private prismaService: PrismaService){}
 
     async uploadFiles(file: Express.Multer.File, activities: DtoActivities): Promise<DtoBaseResponse> {
+        const findStudent = await this.prismaService.students.findFirst({
+            where:{
+                userId: Number(activities.studentId)
+            }
+        });
+
+        if(!findStudent){
+            throw new BadRequestException('Estudiante no encontrado.')
+        }
+        
         const saveFile = await this.prismaService.files.create({
             data: {
-                studentId: Number(activities.studentId),
+                studentId: findStudent.studentId,
                 activityId: Number(activities.activityId),
                 filePath: file.filename
             }
