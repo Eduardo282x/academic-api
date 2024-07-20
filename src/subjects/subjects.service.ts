@@ -37,9 +37,9 @@ export class SubjectsService {
             }
         });
 
-        if(findSubject){
-            throw new BadRequestException('Esta materia ya se encuentra registrada.');
-        }
+        // if(findSubject){
+        //     throw new BadRequestException('Esta materia ya se encuentra registrada.');
+        // }
 
         const createSubject: Subjects = await this.prisma.subjects.create({
             data: {
