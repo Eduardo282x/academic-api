@@ -14,6 +14,10 @@ export class TopicsController {
     async GetTopics(): Promise<Topics[]>{
         return await this.topicsService.getTopics();
     }
+    @Get('/:id')
+    async GetTopicsBySubjects(@Param('id') id: string): Promise<Topics[]>{
+        return await this.topicsService.getTopicsBySubjects(id);
+    }
     @Get('/activity')
     async GetActivities(): Promise<Activities[]>{
         return await this.topicsService.getActivities();

@@ -21,6 +21,19 @@ export class TopicsService {
         return topicsAndActivities;
     }
 
+    async getTopicsBySubjects(subjectId: string): Promise<Topics[]> {
+        const topicsAndActivities = await this.prismaService.topics.findMany({
+            where: {
+                subjectId: Number(subjectId)
+            },
+            include: {
+                activities: true,
+            }
+        });
+
+        return topicsAndActivities;
+    }
+
     async getActivities(): Promise<Activities[]> {
         const activities = await this.prismaService.activities.findMany();
 

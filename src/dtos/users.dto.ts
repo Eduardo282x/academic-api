@@ -11,6 +11,27 @@ export class DtoUsers {
     age: string;
     rolText: string;
 }
+export class DtoAddUsers {
+    @IsString()
+    name: string;
+    @IsString()
+    lastname: string;
+    @IsString()
+    username: string;
+    @IsString()
+    email: string;
+    @IsString()
+    age: string;
+    @IsString()
+    identify: string;
+    @IsNumber()
+    rolId: number;
+}
+
+export class DtoUpdateUsers extends DtoAddUsers {
+    @IsNumber()
+    id: number;
+}
 
 export class DtoStudents {
     userId: number;
