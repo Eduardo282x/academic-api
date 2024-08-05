@@ -18,10 +18,6 @@ export class TopicsController {
     async GetTopicsBySubjects(@Param('id') id: string): Promise<Topics[]>{
         return await this.topicsService.getTopicsBySubjects(id);
     }
-    @Get('/activity')
-    async GetActivities(): Promise<Activities[]>{
-        return await this.topicsService.getActivities();
-    }
     @Post()
     async AddTopics(@Body() newTopics: DtoAddTopics): Promise<DtoBaseResponse>{
         return await this.topicsService.addTopics(newTopics);

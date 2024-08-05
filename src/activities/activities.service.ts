@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Files } from '@prisma/client';
+import { Activities, Files } from '@prisma/client';
 import { DtoActivities, DtoActivitiesValidate } from 'src/dtos/activities.dto';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
@@ -9,6 +9,10 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ActivitiesService {
 
     constructor(private prismaService: PrismaService){}
+
+    async getActivities(): Promise<Activities[]> {
+        return await this.prismaService.activities.findMany();
+    }
 
     async uploadFiles(file: Express.Multer.File, activities: DtoActivities): Promise<DtoBaseResponse> {
         const findStudent = await this.prismaService.students.findFirst({

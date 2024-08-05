@@ -29,6 +29,14 @@ export class SubjectsService {
         return parseSubjects;
     }
 
+    async getSubjectsById(id: string): Promise<Subjects>{
+        return await this.prisma.subjects.findFirst({
+            where: {
+                subjectId: Number(id)
+            }
+        });
+    }
+
     async addSubjects(bodySubjects: BodyAddSubject): Promise<DtoBaseResponse>{
         const findSubject = this.prisma.subjects.findFirst({
             where:{

@@ -34,18 +34,12 @@ export class TopicsService {
         return topicsAndActivities;
     }
 
-    async getActivities(): Promise<Activities[]> {
-        const activities = await this.prismaService.activities.findMany();
-
-        return activities;
-    }
-
     async addTopics(newTopic: DtoAddTopics): Promise<DtoBaseResponse> {
         const createTopics = await this.prismaService.topics.create({
             data: {
                 topicDescription: newTopic.topicDescription,
                 topicName: newTopic.topicName,
-                subjectId: 1
+                subjectId: newTopic.subjectId
             }
         });
         if (!createTopics) {
@@ -75,7 +69,7 @@ export class TopicsService {
             data: {
                 topicDescription: updateTopic.topicDescription,
                 topicName: updateTopic.topicName,
-                subjectId: 1
+                subjectId: updateTopic.subjectId
             },
             where:
             {

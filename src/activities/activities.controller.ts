@@ -4,7 +4,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Observable, of } from 'rxjs';
 import { join } from 'path';
-import { Files } from '@prisma/client';
+import { Activities, Files } from '@prisma/client';
 import { DtoActivities, DtoActivitiesValidate } from 'src/dtos/activities.dto';
 
 @Controller('activities')
@@ -13,6 +13,11 @@ export class ActivitiesController {
     constructor(
         private activitiesServices: ActivitiesService
     ) {
+    }
+
+    @Get()
+    async GetActivities(): Promise<Activities[]>{
+        return await this.activitiesServices.getActivities();
     }
 
     @Get('/:idFile')

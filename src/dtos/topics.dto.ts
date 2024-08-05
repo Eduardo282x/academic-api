@@ -5,6 +5,8 @@ export class DtoAddTopics {
     topicName: string;
     @IsString()
     topicDescription: string;
+    @IsNumber()
+    subjectId: number;
 }
 export class DtoPutTopics extends DtoAddTopics {
     @IsNumber()

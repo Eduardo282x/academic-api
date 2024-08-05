@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { SubjectsService } from './subjects.service';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { BodyAddSubject, BodyUpdateSubject, DtoSubjects } from 'src/dtos/subjects.dto';
+import { Subjects } from '@prisma/client';
 
 @Controller('subjects')
 export class SubjectsController {
@@ -12,6 +13,11 @@ export class SubjectsController {
     @Get()
     async getSubjects(): Promise<DtoSubjects[]>{
         return await this.subjectsService.getSubjects();
+    }
+
+    @Get('/:id')
+    async getSubjectsById(@Param('id') id: string): Promise<Subjects>{
+        return await this.subjectsService.getSubjectsById(id);
     }
 
     @Post()
