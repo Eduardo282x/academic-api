@@ -11,6 +11,27 @@ export class DtoUsers {
     age: string;
     rolText: string;
 }
+export class DtoAddUsers {
+    @IsString()
+    name: string;
+    @IsString()
+    lastname: string;
+    @IsString()
+    username: string;
+    @IsString()
+    email: string;
+    @IsString()
+    age: string;
+    @IsString()
+    identify: string;
+    @IsNumber()
+    rolId: number;
+}
+
+export class DtoUpdateUsers extends DtoAddUsers {
+    @IsNumber()
+    id: number;
+}
 
 export class DtoStudents {
     userId: number;
@@ -30,6 +51,8 @@ export class DtoAddUser {
     @IsString()
     username: string;
     @IsString()
+    identify: string;
+    @IsString()
     email: string;
     @IsNumber()
     age: number;
@@ -43,6 +66,8 @@ export class DtoAddStudents {
     username: string;
     @IsString()
     email: string;
+    @IsString()
+    identify: string;
     @IsNumber()
     age: number;
     @IsString()
@@ -58,6 +83,8 @@ export class DtoBaseUsers {
     username: string;
     @IsString()
     email: string;
+    @IsString()
+    identify: string;
     @IsNumber()
     age: number;
 }
@@ -65,13 +92,9 @@ export class DtoPutTeachers extends DtoBaseUsers {
     @IsNumber()
     id: number;
 }
-export class DtoPutStudents extends DtoPutTeachers{
+export class DtoPutStudents extends DtoBaseUsers{
     @IsNumber()
     userId: number;
     @IsString()
     classroomId: string;
-}
-
-export class QueryUsers {
-    rolId: number;
 }

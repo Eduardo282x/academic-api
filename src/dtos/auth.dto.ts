@@ -30,6 +30,8 @@ export class BodyRegister {
     @IsString()
     username: string;
     @IsString()
+    identify: string;
+    @IsString()
     email: string;
     @IsString()
     age: string;

@@ -8,6 +8,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Files {
+  fileId     Int        @id @default(autoincrement())
+  filePath   String
+  activityId Int
+  studentId  Int
+  students   Students   @relation(fields: [studentId], references: [studentId])
+  activities Activities @relation(fields: [activityId], references: [activityId])
+}
+
 model Activities {
   activityId          Int      @id @default(autoincrement())
   activityName        String
@@ -15,6 +24,16 @@ model Activities {
   topidId             Int
   topics              Topics   @relation(fields: [topidId], references: [topicIc])
   grades              Grades[]
+  files               Files[]
+}
+
+model Topics {
+  topicIc          Int          @id @default(autoincrement())
+  topicName        String
+  topicDescription String       @db.VarChar(200)
+  subjectId        Int
+  activities       Activities[]
+  subjects         Subjects     @relation(fields: [subjectId], references: [subjectId])
 }
 
 model Attendance {
@@ -57,6 +76,7 @@ model Students {
   grades      Grades[]
   classrooms  Classrooms   @relation(fields: [classroomId], references: [classroomId])
   users       Users        @relation(fields: [userId], references: [id])
+  Files       Files[]
 }
 
 model Subjects {
@@ -69,21 +89,13 @@ model Subjects {
   topics             Topics[]
 }
 
-model Topics {
-  topicIc          Int          @id @default(autoincrement())
-  topicName        String
-  topicDescription String       @db.VarChar(200)
-  subjectId        Int
-  activities       Activities[]
-  subjects         Subjects     @relation(fields: [subjectId], references: [subjectId])
-}
-
 model Users {
   id       Int        @id @default(autoincrement())
   name     String
   lastname String
   username String
   password String
+  identify String
   email    String
   age      String
   rolId    Int

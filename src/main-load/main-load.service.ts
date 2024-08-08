@@ -24,6 +24,7 @@ export class MainLoadService {
                         lastname: 'admin',
                         username: 'admin',
                         password: 'admin',
+                        identify: 'V28391325',
                         email: 'admin@gmail.com',
                         age: '22',
                         rolId: 1
@@ -33,6 +34,7 @@ export class MainLoadService {
                         lastname: 'Rojas',
                         username: 'Profesor02',
                         password: '1234',
+                        identify: 'V28391325',
                         email: 'eduardo@gmail.com',
                         age: '22',
                         rolId: 2
@@ -42,6 +44,7 @@ export class MainLoadService {
                         lastname: 'Nuevo',
                         username: 'Estudiante01',
                         password: '12345678',
+                        identify: 'V28391325',
                         email: 'estudiante@gmail.com',
                         age: '22',
                         rolId: 3
@@ -51,6 +54,7 @@ export class MainLoadService {
                         lastname: 'Martinez',
                         username: 'AnaMtz03',
                         password: '12345678',
+                        identify: 'V28391325',
                         email: 'ana.martinez@gmail.com',
                         age: '20',
                         rolId: 3
@@ -60,6 +64,7 @@ export class MainLoadService {
                         lastname: 'Gonzalez',
                         username: 'LuisGon05',
                         password: '12345678',
+                        identify: 'V28391325',
                         email: 'luis.gonzalez@gmail.com',
                         age: '23',
                         rolId: 3
@@ -69,6 +74,7 @@ export class MainLoadService {
                         lastname: 'Perez',
                         username: 'CarlosP88',
                         password: '12345678',
+                        identify: 'V28391325',
                         email: 'carlos.perez@gmail.com',
                         age: '21',
                         rolId: 3
@@ -78,6 +84,7 @@ export class MainLoadService {
                         lastname: 'Fernandez',
                         username: 'MariaFdez91',
                         password: '12345678',
+                        identify: 'V28391325',
                         email: 'maria.fernandez@gmail.com',
                         age: '22',
                         rolId: 3
@@ -87,6 +94,7 @@ export class MainLoadService {
                         lastname: 'Lopez',
                         username: 'SofiaLpz99',
                         password: '12345678',
+                        identify: 'V28391325',
                         email: 'sofia.lopez@gmail.com',
                         age: '19',
                         rolId: 3
@@ -96,7 +104,7 @@ export class MainLoadService {
 
             await this.prisma.classrooms.create({
                 data: {
-                    grade: '6to Grado'
+                    grade: '6to Grado - Sección U'
                 }
             });
 

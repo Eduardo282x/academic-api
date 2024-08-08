@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { DtoAddStudents, DtoAddUser, DtoPutStudents, DtoPutTeachers, DtoStudents, DtoUsers } from 'src/dtos/users.dto';
+import { DtoAddStudents, DtoAddUser, DtoAddUsers, DtoPutStudents, DtoPutTeachers, DtoStudents, DtoUpdateUsers, DtoUsers } from 'src/dtos/users.dto';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
+import { Roles } from '@prisma/client';
 
 @Controller('users')
 export class UsersController {
@@ -12,6 +13,25 @@ export class UsersController {
     async getUsers(): Promise<DtoUsers[]> {
         return await this.usersServices.getUsers();
     }
+    @Post()
+    async addUsers(@Body() newUser: DtoAddUsers): Promise<DtoBaseResponse> {
+        return await this.usersServices.addUsers(newUser);
+    }
+    @Put()
+    async updateUsers(@Body() updateUser: DtoUpdateUsers): Promise<DtoBaseResponse> {
+        return await this.usersServices.putUsers(updateUser);
+    }
+    @Delete('/:id')
+    async deleteUsers(@Param('id') id: string): Promise<DtoBaseResponse> {
+        return await this.usersServices.deleteUsers(id);
+    }
+
+    @Get('/roles')
+    async getRoles(): Promise<Roles[]> {
+        return await this.usersServices.getRoles();
+    }
+
+
     @Get('/teachers')
     async getTeachers(): Promise<DtoUsers[]> {
         return await this.usersServices.getTeachers();
@@ -30,8 +50,8 @@ export class UsersController {
     }
 
     @Get('/students')
-    async getStudents(@Query() rolId): Promise<DtoStudents[]> {
-        return await this.usersServices.getStudents(rolId);
+    async getStudents(): Promise<DtoStudents[]> {
+        return await this.usersServices.getStudents();
     }
 
     @Post('/students')
