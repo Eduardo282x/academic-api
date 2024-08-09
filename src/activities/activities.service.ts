@@ -42,10 +42,16 @@ export class ActivitiesService {
     }
 
     async consultFileExist(activityConsult: DtoActivitiesValidate): Promise<Files | null> {
+        const findStudent = await this.prismaService.students.findFirst({
+            where: {
+                userId: activityConsult.studentId
+            }
+        });
+
         const findFileExist = await this.prismaService.files.findFirst({
             where: {
                 activityId: activityConsult.activityId,
-                studentId: activityConsult.studentId
+                studentId: findStudent.studentId
             }
         });
 
