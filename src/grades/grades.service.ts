@@ -12,10 +12,16 @@ export class GradesService {
     constructor(private prismaService: PrismaService){}
 
     async consultGradeStudent(activityConsult: DtoActivitiesValidate): Promise<string> {
+        const findStudent = await this.prismaService.students.findFirst({
+            where: {
+                userId: activityConsult.studentId,
+            }
+        });
+
         const findGradeStudent = await this.prismaService.grades.findFirst({
             where: {
                 activityId: activityConsult.activityId,
-                studendId: activityConsult.studentId
+                studendId: findStudent.studentId
             }
         });
 
@@ -28,9 +34,15 @@ export class GradesService {
     }
 
     async setGradeStudent(grade: DtoGrades): Promise<DtoBaseResponse> {
+        const findStudent = await this.prismaService.students.findFirst({
+            where: {
+                userId: grade.studentId,
+            }
+        });
+
         const setGrade = await this.prismaService.grades.create({
             data: {
-                studendId: grade.studentId,
+                studendId: findStudent.studentId,
                 activityId: grade.activityId,
                 score: grade.score
             }
