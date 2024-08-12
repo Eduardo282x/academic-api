@@ -82,6 +82,7 @@ model Students {
 model Subjects {
   subjectId          Int          @id @default(autoincrement())
   subjectName        String
+  subjectClassName        String
   classroomId        Int
   subjectDescription String       @db.VarChar(200)
   attendance         Attendance[]

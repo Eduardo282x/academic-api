@@ -45,12 +45,12 @@ export class SubjectsService {
             }
         });
 
-        // if(findSubject){
-        //     throw new BadRequestException('Esta materia ya se encuentra registrada.');
-        // }
+        const colorsBgSubject: string[] = ['bg-subject-blue','bg-subject-pink','bg-subject-green'];
+        const randomIndex = Math.floor(Math.random() * colorsBgSubject.length);
 
         const createSubject: Subjects = await this.prisma.subjects.create({
             data: {
+                subjectClassName: colorsBgSubject[randomIndex],
                 subjectName: bodySubjects.subjectName,
                 classroomId: bodySubjects.classroomId,
                 subjectDescription: ''

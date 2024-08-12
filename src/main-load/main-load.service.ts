@@ -110,6 +110,7 @@ export class MainLoadService {
 
             await this.prisma.subjects.create({
                 data: {
+                    subjectClassName: 'bg-subject-green',
                     subjectName: 'Geometria',
                     subjectDescription: '',
                     classroomId: 1
