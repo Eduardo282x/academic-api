@@ -8,6 +8,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model FilesTopics {
+  fileId   Int    @id @default(autoincrement())
+  filePath String
+  topicId  Int
+  topic    Topics @relation(fields: [topicId], references: [topicIc])
+}
+
 model Files {
   fileId     Int        @id @default(autoincrement())
   filePath   String
@@ -28,12 +35,13 @@ model Activities {
 }
 
 model Topics {
-  topicIc          Int          @id @default(autoincrement())
+  topicIc          Int           @id @default(autoincrement())
   topicName        String
-  topicDescription String       @db.VarChar(200)
+  topicDescription String        @db.VarChar(200)
   subjectId        Int
   activities       Activities[]
-  subjects         Subjects     @relation(fields: [subjectId], references: [subjectId])
+  subjects         Subjects      @relation(fields: [subjectId], references: [subjectId])
+  FilesTopics      FilesTopics[]
 }
 
 model Attendance {
@@ -82,7 +90,7 @@ model Students {
 model Subjects {
   subjectId          Int          @id @default(autoincrement())
   subjectName        String
-  subjectClassName        String
+  subjectClassName   String
   classroomId        Int
   subjectDescription String       @db.VarChar(200)
   attendance         Attendance[]
