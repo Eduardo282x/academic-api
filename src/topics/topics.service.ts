@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Activities, Topics } from '@prisma/client';
+import { Activities, Files, FilesTopics, Topics } from '@prisma/client';
 import { DtoBaseResponse } from 'src/dtos/base-response.dto';
 import { baseResponse } from 'src/dtos/baseResponse';
 import { DtoAddActivity, DtoAddTopics, DtoPutActivity, DtoPutTopics } from 'src/dtos/topics.dto';
@@ -28,6 +28,7 @@ export class TopicsService {
             },
             include: {
                 activities: true,
+                FilesTopics: true
             }
         });
 
@@ -49,6 +50,37 @@ export class TopicsService {
         baseResponse.message = 'Tema creado exitosamente';
         return baseResponse;
     }
+
+    async uploadFileTopic(file: Express.Multer.File, topicId: string): Promise<DtoBaseResponse> {
+        const saveFile = await this.prismaService.filesTopics.create({
+            data: {
+                topicId: Number(topicId),
+                filePath: file.filename
+            }
+        });
+
+        if (!saveFile) {
+            throw new BadRequestException('No se pudo guardar el archivo');
+        }
+
+        baseResponse.message = 'Archivo subido exitosamente.';
+        return baseResponse;
+    }
+
+    async consultFileTopic(fileId: string): Promise<FilesTopics | null> {
+        const findFileTopic = await this.prismaService.filesTopics.findFirst({
+            where: {
+                fileId: Number(fileId),
+            }
+        });
+
+        if(!findFileTopic){
+            return null;
+        }
+
+        return findFileTopic;
+    }
+
     async addActivity(newActivity: DtoAddActivity): Promise<DtoBaseResponse> {
         const createActivity = await this.prismaService.activities.create({
             data: {

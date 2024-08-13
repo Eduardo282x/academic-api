@@ -1,4 +1,23 @@
 -- CreateTable
+CREATE TABLE `FilesTopics` (
+    `fileId` INTEGER NOT NULL AUTO_INCREMENT,
+    `filePath` VARCHAR(191) NOT NULL,
+    `topicId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`fileId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Files` (
+    `fileId` INTEGER NOT NULL AUTO_INCREMENT,
+    `filePath` VARCHAR(191) NOT NULL,
+    `activityId` INTEGER NOT NULL,
+    `studentId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`fileId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Activities` (
     `activityId` INTEGER NOT NULL AUTO_INCREMENT,
     `activityName` VARCHAR(191) NOT NULL,
@@ -6,6 +25,16 @@ CREATE TABLE `Activities` (
     `topidId` INTEGER NOT NULL,
 
     PRIMARY KEY (`activityId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Topics` (
+    `topicIc` INTEGER NOT NULL AUTO_INCREMENT,
+    `topicName` VARCHAR(191) NOT NULL,
+    `topicDescription` VARCHAR(200) NOT NULL,
+    `subjectId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`topicIc`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -58,20 +87,11 @@ CREATE TABLE `Students` (
 CREATE TABLE `Subjects` (
     `subjectId` INTEGER NOT NULL AUTO_INCREMENT,
     `subjectName` VARCHAR(191) NOT NULL,
+    `subjectClassName` VARCHAR(191) NOT NULL,
     `classroomId` INTEGER NOT NULL,
     `subjectDescription` VARCHAR(200) NOT NULL,
 
     PRIMARY KEY (`subjectId`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Topics` (
-    `topicIc` INTEGER NOT NULL AUTO_INCREMENT,
-    `topicName` VARCHAR(191) NOT NULL,
-    `topicDescription` VARCHAR(200) NOT NULL,
-    `subjectId` INTEGER NOT NULL,
-
-    PRIMARY KEY (`topicIc`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -81,6 +101,7 @@ CREATE TABLE `Users` (
     `lastname` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
+    `identify` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `age` VARCHAR(191) NOT NULL,
     `rolId` INTEGER NOT NULL,
@@ -89,7 +110,19 @@ CREATE TABLE `Users` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
+ALTER TABLE `FilesTopics` ADD CONSTRAINT `FilesTopics_topicId_fkey` FOREIGN KEY (`topicId`) REFERENCES `Topics`(`topicIc`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Files` ADD CONSTRAINT `Files_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `Students`(`studentId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Files` ADD CONSTRAINT `Files_activityId_fkey` FOREIGN KEY (`activityId`) REFERENCES `Activities`(`activityId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Activities` ADD CONSTRAINT `Activities_topidId_fkey` FOREIGN KEY (`topidId`) REFERENCES `Topics`(`topicIc`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Topics` ADD CONSTRAINT `Topics_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `Subjects`(`subjectId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Attendance` ADD CONSTRAINT `Attendance_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `Students`(`studentId`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -111,9 +144,6 @@ ALTER TABLE `Students` ADD CONSTRAINT `Students_userId_fkey` FOREIGN KEY (`userI
 
 -- AddForeignKey
 ALTER TABLE `Subjects` ADD CONSTRAINT `Subjects_classroomId_fkey` FOREIGN KEY (`classroomId`) REFERENCES `Classrooms`(`classroomId`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Topics` ADD CONSTRAINT `Topics_subjectId_fkey` FOREIGN KEY (`subjectId`) REFERENCES `Subjects`(`subjectId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Users` ADD CONSTRAINT `Users_rolId_fkey` FOREIGN KEY (`rolId`) REFERENCES `Roles`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
